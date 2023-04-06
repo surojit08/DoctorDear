@@ -1,6 +1,5 @@
 package com.surojit.doctordear.doctor;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surojit.doctordear.doctor_qualification.DoctorQualification;
 import jakarta.persistence.*;
