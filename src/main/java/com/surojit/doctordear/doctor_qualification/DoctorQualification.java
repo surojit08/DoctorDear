@@ -1,8 +1,6 @@
 package com.surojit.doctordear.doctor_qualification;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surojit.doctordear.doctor.Doctor;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,4 +30,6 @@ public class DoctorQualification {
     private String name;
 
     private Integer year;
+
+    private String place;
 }

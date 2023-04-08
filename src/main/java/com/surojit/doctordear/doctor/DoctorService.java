@@ -1,12 +1,13 @@
 package com.surojit.doctordear.doctor;
 
+
 import com.surojit.doctordear.doctor_qualification.DoctorQualification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;

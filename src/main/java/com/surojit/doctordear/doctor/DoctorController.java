@@ -17,10 +17,11 @@ public class DoctorController {
     @Autowired
     DoctorService doctorService;
 
+
     /**
      * Get a general description of doctor such as name, registration number etc.
      */
-    @GetMapping("/{doctorId}/general")
+    @GetMapping("/{doctorId}")
     public void getDoctorGeneralDescription(@PathVariable String doctorId) {
 
     }
@@ -40,7 +41,7 @@ public class DoctorController {
         if (regPay.qualifications.length > 0) {
             QualificationReq[] qlFs = regPay.qualifications;
             for (var qlf : qlFs) {
-                doctorQualifications.add(DoctorQualification.builder().name(qlf.name).year(qlf.year).build());
+                doctorQualifications.add(DoctorQualification.builder().name(qlf.name).year(qlf.year).place(qlf.place).build());
             }
         }
 
@@ -61,6 +62,7 @@ public class DoctorController {
     static class QualificationReq {
         private String name;
         private Integer year;
+        private String place;
     }
 
     @Getter

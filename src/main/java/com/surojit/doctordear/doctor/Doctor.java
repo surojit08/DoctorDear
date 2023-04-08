@@ -36,5 +36,8 @@ public class Doctor {
     @OneToMany(targetEntity = DoctorQualification.class, mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DoctorQualification> qualifications;
 
+    @Column(nullable = false)
+    private String status;
+
 
 }
