@@ -4,6 +4,10 @@ import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
 
+enum Status {
+    A, C, S
+}
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +32,10 @@ public class Center {
     @ManyToOne
     @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
 
