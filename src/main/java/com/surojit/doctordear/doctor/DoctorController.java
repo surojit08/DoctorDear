@@ -1,6 +1,7 @@
 package com.surojit.doctordear.doctor;
 
 import com.surojit.doctordear.doctor_qualification.DoctorQualification;
+import com.surojit.doctordear.doctor_qualification.DoctorQualificationService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -17,13 +19,16 @@ public class DoctorController {
     @Autowired
     DoctorService doctorService;
 
+    @Autowired
+    DoctorQualificationService doctorQualificationService;
+
 
     /**
      * Get a general description of doctor such as name, registration number etc.
      */
     @GetMapping("/{doctorId}")
-    public void getDoctorGeneralDescription(@PathVariable String doctorId) {
-
+    public Doctor getDoctorGeneralDescription(@PathVariable Long doctorId) {
+        return doctorService.getDoctorGeneralDescription(doctorId);
     }
 
     @GetMapping("/{doctorId}/center/{centerId}")
@@ -34,8 +39,6 @@ public class DoctorController {
     // doctor self register to system.
     @PostMapping("/register")
     public Doctor registerDoctorToSystem(@RequestBody RegisterPayload regPay) {
-        System.out.println("boo =>" + regPay);
-
         Doctor doc = regPay.doctor;
         ArrayList<DoctorQualification> doctorQualifications = new ArrayList<>();
         if (regPay.qualifications.length > 0) {
@@ -46,12 +49,23 @@ public class DoctorController {
         }
 
 
-        return doctorService.registerDoctorToSystem(doc,doctorQualifications);
+        return doctorService.registerDoctorToSystem(doc, doctorQualifications);
     }
 
     @PostMapping("/register/{centerId}")
     public void registerDoctorByCenter(@RequestBody RegisterPayload regPay, @PathVariable String centerId) {
 
+
+    }
+
+    @PostMapping("/{doctorId}/qualification")
+    public List<DoctorQualification> addQualifications(@RequestBody AddQualificationsPayload addQualificationsPayload, @PathVariable Long doctorId) {
+        List<QualificationReq> qls = List.of(addQualificationsPayload.qualifications);
+        List<DoctorQualification> doctorQualifications = new ArrayList<>();
+        for (var qlf : qls) {
+            doctorQualifications.add(DoctorQualification.builder().name(qlf.name).year(qlf.year).place(qlf.place).build());
+        }
+        return doctorQualificationService.addQualifications(doctorId, doctorQualifications);
 
     }
 
@@ -72,5 +86,14 @@ public class DoctorController {
     static class RegisterPayload {
         private Doctor doctor;
         private QualificationReq[] qualifications;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @ToString
+    static class AddQualificationsPayload {
+        private QualificationReq[] qualifications;
+
     }
 }

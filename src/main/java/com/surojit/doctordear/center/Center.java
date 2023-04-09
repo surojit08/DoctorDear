@@ -4,7 +4,7 @@ import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
 
-enum Status {
+enum CenterStatus {
     A, C, S
 }
 
@@ -35,7 +35,7 @@ public class Center {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private CenterStatus status;
 
 }
 

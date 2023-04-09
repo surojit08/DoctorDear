@@ -10,7 +10,7 @@ public interface CenterRepository extends JpaRepository<Center, Long>, JpaSpecif
 
     default List<Center> findActiveCenters(String name) {
         return findAll((root, query, cb) -> {
-            Predicate withStatus = cb.equal(root.get(Center_.status), Status.A);
+            Predicate withStatus = cb.equal(root.get(Center_.status), CenterStatus.A);
             Predicate withName = cb.like(root.get(Center_.name), name); // or use metaclass
             return cb.and(withName, withStatus);
         });

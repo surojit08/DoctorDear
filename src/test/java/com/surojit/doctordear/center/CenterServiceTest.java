@@ -32,7 +32,7 @@ class CenterServiceTest {
         Hospital saved_hospital = hospitalService.registerHospital(newHospital, List.of());
 
         // create new center of the hospital.
-        Center newCenter = Center.builder().name("armin").code("111").address("kolkata").hospital(saved_hospital).status(Status.A)
+        Center newCenter = Center.builder().name("armin").code("111").address("kolkata").hospital(saved_hospital).status(CenterStatus.A)
                 .contact(CenterContact.builder().primary_email("122222").primary_phone("2323").build()).build();
         Center center = centerService.registerCenter(newCenter);
 

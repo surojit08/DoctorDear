@@ -7,6 +7,10 @@ import lombok.*;
 
 import java.util.List;
 
+enum DoctorStatus {
+    A, C, S
+}
+
 @Setter
 @ToString
 @AllArgsConstructor
@@ -14,6 +18,7 @@ import java.util.List;
 @Getter
 @Entity
 @Builder
+//@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class Doctor {
     @Id
     @Column(name = "id", nullable = false, columnDefinition = "serial")
@@ -34,10 +39,12 @@ public class Doctor {
 
     @JsonManagedReference
     @OneToMany(targetEntity = DoctorQualification.class, mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<DoctorQualification> qualifications;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DoctorStatus status = DoctorStatus.A;
 
 
 }
