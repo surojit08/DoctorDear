@@ -1,5 +1,6 @@
 package com.surojit.doctordear.hospital;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surojit.doctordear.center.Center;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,7 @@ public class Hospital {
     private String address;
 
     @ToString.Exclude
+    @JsonManagedReference
     @OneToMany(targetEntity = Center.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<Center> centers;
 

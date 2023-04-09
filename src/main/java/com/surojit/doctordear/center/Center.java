@@ -1,5 +1,6 @@
 package com.surojit.doctordear.center;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,6 +16,7 @@ enum CenterStatus {
 @Getter
 @Setter
 @Table(name = "center")
+@ToString
 public class Center {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,7 @@ public class Center {
 
     @ManyToOne
     @JoinColumn(name = "hospital_id", nullable = false)
+    @JsonBackReference
     private Hospital hospital;
 
     @Column(nullable = false)
