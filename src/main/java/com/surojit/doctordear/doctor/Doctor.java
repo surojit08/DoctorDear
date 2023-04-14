@@ -21,7 +21,7 @@ enum DoctorStatus {
 //@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class Doctor {
     @Id
-    @Column(name = "id", nullable = false, columnDefinition = "serial")
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

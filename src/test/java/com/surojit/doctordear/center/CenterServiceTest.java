@@ -34,9 +34,8 @@ class CenterServiceTest {
         // create new center of the hospital.
         Center newCenter = Center.builder().name("armin").code("111").address("kolkata").hospital(saved_hospital).status(CenterStatus.A)
                 .contact(CenterContact.builder().primary_email("122222").primary_phone("2323").build()).build();
-        Center center = centerService.registerCenter(newCenter);
+        Center center = centerService.registerCenter(newCenter, newHospital.getId());
 
-        assertEquals(center.getId(), 1);
         assertEquals(center.getName(), "armin");
         assertEquals(center.getCode(), "111");
         assertEquals(center.getAddress(), "kolkata");

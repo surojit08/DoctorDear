@@ -1,13 +1,13 @@
 package com.surojit.doctordear.center;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.surojit.doctordear.department.Department;
 import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
 
-enum CenterStatus {
-    A, C, S
-}
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class Center {
     @Embedded
     private CenterContact contact;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hospital_id", nullable = false)
     @JsonBackReference
     private Hospital hospital;
@@ -39,6 +39,11 @@ public class Center {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CenterStatus status;
+
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(targetEntity = Department.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "center")
+    private List<Department> departments;
 
 }
 
