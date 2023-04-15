@@ -1,13 +1,9 @@
 package com.surojit.doctordear.center;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.surojit.doctordear.department.Department;
 import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -40,10 +36,6 @@ public class Center {
     @Enumerated(EnumType.STRING)
     private CenterStatus status;
 
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(targetEntity = Department.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "center")
-    private List<Department> departments;
 
 }
 

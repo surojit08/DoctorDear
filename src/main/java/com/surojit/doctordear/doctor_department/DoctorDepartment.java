@@ -22,4 +22,6 @@ public class DoctorDepartment {
     @ManyToOne()
     @JoinColumn(name = "center_id", nullable = false)
     private Center center;
+
+
 }

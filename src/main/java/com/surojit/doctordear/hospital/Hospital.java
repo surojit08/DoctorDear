@@ -2,6 +2,7 @@ package com.surojit.doctordear.hospital;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surojit.doctordear.center.Center;
+import com.surojit.doctordear.department.Department;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,5 +28,11 @@ public class Hospital {
     @JsonManagedReference
     @OneToMany(targetEntity = Center.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<Center> centers;
+
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(targetEntity = Department.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
+    private List<Department> departments;
+
 
 }

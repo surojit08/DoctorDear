@@ -1,7 +1,7 @@
 package com.surojit.doctordear.department;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.surojit.doctordear.center.Center;
+import com.surojit.doctordear.hospital.Hospital;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +21,7 @@ public class Department {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "center_id", nullable = false)
+    @JoinColumn(name = "hospital_id", nullable = false)
     @JsonBackReference
-    private Center center;
+    private Hospital hospital;
 }

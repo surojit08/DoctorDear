@@ -1,7 +1,7 @@
 package com.surojit.doctordear.department;
 
-import com.surojit.doctordear.center.Center;
-import com.surojit.doctordear.center.CenterRepository;
+import com.surojit.doctordear.hospital.Hospital;
+import com.surojit.doctordear.hospital.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,13 @@ public class DepartmentService {
     private DepartmentRepository departmentRepository;
 
     @Autowired
-    private CenterRepository centerRepository;
+    private HospitalRepository hospitalRepository;
 
-    Department addNewDepartment(Department department, Long centerId) throws IllegalAccessException {
-        System.out.println("center id" + centerId);
-        // find the center id;
-        Optional<Center> center = centerRepository.findById(centerId);
-        if (center.isPresent()) {
-            department.setCenter(center.get());
+    Department addNewDepartment(Department department, Long hospitalId) throws IllegalAccessException {
+        // find the hospital;
+        Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
+        if (hospital.isPresent()) {
+            department.setHospital(hospital.get());
             return departmentRepository.save(department);
         } else {
             throw new IllegalAccessException();
