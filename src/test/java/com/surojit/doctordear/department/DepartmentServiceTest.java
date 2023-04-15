@@ -5,7 +5,8 @@ import com.surojit.doctordear.center.CenterRepository;
 import com.surojit.doctordear.center.CenterStatus;
 import com.surojit.doctordear.hospital.Hospital;
 import com.surojit.doctordear.hospital.HospitalRepository;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DepartmentServiceTest {
 
@@ -29,7 +29,8 @@ class DepartmentServiceTest {
     @Autowired
     private CenterRepository centerRepository;
 
-    @BeforeAll
+    @BeforeEach
+    @Order(0)
     void setUp() {
         // create a hospital and a center with it
         Hospital newHospital = Hospital.builder().name("Alpaca").address("Barack pore").build();
@@ -43,18 +44,21 @@ class DepartmentServiceTest {
 
 
     @Test
+    @Order(1)
     void addNewDepartment() throws IllegalAccessException {
+        System.out.println(center);
         Department newDepartment = Department.builder().name("ENT").build();
         Department savedDepartment = departmentService.addNewDepartment(newDepartment, center.getId());
         assertEquals(savedDepartment.getName(), "ENT");
         assertEquals(savedDepartment.getCenter().getName(), "BBO");
     }
 
+
     @Test
-    void addNewDepartmentWithInvalidCenter() throws IllegalAccessException {
+    @Order(2)
+    void addNewDepartmentWithInvalidCenter() {
         Department newDepartment = Department.builder().name("ENT").build();
-        assertThrows(IllegalAccessException.class, () -> {
-            departmentService.addNewDepartment(newDepartment, 2L);
-        });
+        System.out.println(newDepartment);
+        assertThrows(IllegalAccessException.class, () -> departmentService.addNewDepartment(newDepartment, 122L));
     }
 }
