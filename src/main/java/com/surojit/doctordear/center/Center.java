@@ -27,9 +27,10 @@ public class Center {
     @Embedded
     private CenterContact contact;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", nullable = false)
     @JsonBackReference
+    @ToString.Exclude
     private Hospital hospital;
 
     @Column(nullable = false)

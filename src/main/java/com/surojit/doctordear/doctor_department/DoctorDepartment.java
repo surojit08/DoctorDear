@@ -4,11 +4,18 @@ import com.surojit.doctordear.center.Center;
 import com.surojit.doctordear.department.Department;
 import com.surojit.doctordear.doctor.Doctor;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Table(name = "doctor_department")
 public class DoctorDepartment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne()
@@ -22,6 +29,5 @@ public class DoctorDepartment {
     @ManyToOne()
     @JoinColumn(name = "center_id", nullable = false)
     private Center center;
-
 
 }

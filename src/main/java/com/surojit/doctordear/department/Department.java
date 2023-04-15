@@ -20,8 +20,9 @@ public class Department {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", nullable = false)
     @JsonBackReference
+    @ToString.Exclude
     private Hospital hospital;
 }

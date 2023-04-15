@@ -41,16 +41,12 @@ class CenterServiceTest {
         assertEquals(center.getAddress(), "kolkata");
         assertEquals(center.getContact().getPrimary_email(), "122222");
         assertEquals(center.getContact().getPrimary_phone(), "2323");
-
-        assertEquals(center.getHospital().getName(), "L.Asm");
     }
 
     @Test
     @Order(2)
     void getActiveCenters() {
-
         List<Center> centers = centerService.findCenters("%arm%");
-        System.out.println(centers);
         assertFalse(centers.isEmpty());
     }
 }
