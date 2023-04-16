@@ -19,17 +19,28 @@ class DoctorServiceTest {
     void registerDoctorToSystem() {
 
         // create a new doctor
-        Doctor doc = Doctor.builder().firstName("Soumen").lastName("Das").regId("123RE123").status(DoctorStatus.A).build();
+        Doctor doc = Doctor.builder()
+                           .firstName("Soumen")
+                           .lastName("Das")
+                           .regId("123RE123")
+                           .status(DoctorStatus.A)
+                           .build();
 
-        DoctorQualification q1 = DoctorQualification.builder().name("MD").year(2003).build();
-        DoctorQualification q2 = DoctorQualification.builder().name("M.B.B.S").year(2001).build();
+        DoctorQualification q1 = DoctorQualification.builder()
+                                                    .name("MD")
+                                                    .year(2003)
+                                                    .build();
+        DoctorQualification q2 = DoctorQualification.builder()
+                                                    .name("M.B.B.S")
+                                                    .year(2001)
+                                                    .build();
         q1.setDoctor(doc);
         q2.setDoctor(doc);
         List<DoctorQualification> qualifications = List.of(q1);
         doc.setQualifications(qualifications);
 
         var saved_doc = doctorRepository.save(doc);
-        assertEquals(saved_doc.getFirstName(),"Soumen");
+        assertEquals(saved_doc.getFirstName(), "Soumen");
     }
 
 }

@@ -44,7 +44,11 @@ public class DoctorController {
         if (regPay.qualifications.length > 0) {
             QualificationReq[] qlFs = regPay.qualifications;
             for (var qlf : qlFs) {
-                doctorQualifications.add(DoctorQualification.builder().name(qlf.name).year(qlf.year).place(qlf.place).build());
+                doctorQualifications.add(DoctorQualification.builder()
+                                                            .name(qlf.name)
+                                                            .year(qlf.year)
+                                                            .place(qlf.place)
+                                                            .build());
             }
         }
 
@@ -63,7 +67,11 @@ public class DoctorController {
         List<QualificationReq> qls = List.of(addQualificationsPayload.qualifications);
         List<DoctorQualification> doctorQualifications = new ArrayList<>();
         for (var qlf : qls) {
-            doctorQualifications.add(DoctorQualification.builder().name(qlf.name).year(qlf.year).place(qlf.place).build());
+            doctorQualifications.add(DoctorQualification.builder()
+                                                        .name(qlf.name)
+                                                        .year(qlf.year)
+                                                        .place(qlf.place)
+                                                        .build());
         }
         return doctorQualificationService.addQualifications(doctorId, doctorQualifications);
 

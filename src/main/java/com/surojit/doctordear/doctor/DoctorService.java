@@ -25,7 +25,8 @@ public class DoctorService {
 
 
     public Doctor getDoctorGeneralDescription(Long doctorId) {
-        return doctorRepository.findById(doctorId).get();
+        return doctorRepository.findById(doctorId)
+                               .get();
     }
 
 

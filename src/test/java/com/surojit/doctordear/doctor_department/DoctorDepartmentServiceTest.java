@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -48,20 +49,36 @@ class DoctorDepartmentServiceTest {
     @BeforeAll
     void setUp() {
         // create a hospital and a center with it
-        Hospital newHospital = Hospital.builder().name("Alpaca").address("Barack pore").build();
+        Hospital newHospital = Hospital.builder()
+                                       .name("Alpaca")
+                                       .address("Barack pore")
+                                       .build();
         var hospital = hospitalRepository.save(newHospital);
 
         // add a center to the hospital
-        Center newCenter = Center.builder().name("Center 1").code("122").hospital(hospital).status(CenterStatus.A).build();
+        Center newCenter = Center.builder()
+                                 .name("Center 1")
+                                 .code("122")
+                                 .hospital(hospital)
+                                 .status(CenterStatus.A)
+                                 .build();
         center = centerRepository.save(newCenter);
 
         // create department
-        department = Department.builder().name("Dep 1").hospital(hospital).build();
+        department = Department.builder()
+                               .name("Dep 1")
+                               .hospital(hospital)
+                               .build();
         department = departmentRepository.save(department);
         depId = department.getId();
 
         // create a doctor.
-        Doctor newDoctor = Doctor.builder().firstName("Puma").lastName("Bag").regId("344").status(DoctorStatus.A).build();
+        Doctor newDoctor = Doctor.builder()
+                                 .firstName("Puma")
+                                 .lastName("Bag")
+                                 .regId("344")
+                                 .status(DoctorStatus.A)
+                                 .build();
         doctor = doctorRepository.save(newDoctor);
         docId = doctor.getId();
 
@@ -71,12 +88,20 @@ class DoctorDepartmentServiceTest {
     @Test
     @Order(1)
     void addDoctorToDepartment() throws IllegalAccessException {
-        Schedule schedule = Schedule.builder().onSunday(true).onFriday(true).time_from(2L).time_to(3L).build();
+        Schedule schedule = Schedule.builder()
+                                    .onSunday(true)
+                                    .onFriday(true)
+                                    .time_from(2L)
+                                    .time_to(3L)
+                                    .build();
         DoctorDepartment doctorDepartment = doctorDepartmentService.addDoctorToDepartment(doctor.getId(), department.getId(), center.getId(), schedule);
 
-        assertEquals(doctorDepartment.getDepartment().getId(), department.getId());
-        assertEquals(doctorDepartment.getDoctor().getId(), doctor.getId());
-        assertEquals(doctorDepartment.getCenter().getId(), center.getId());
+        assertEquals(doctorDepartment.getDepartment()
+                                     .getId(), department.getId());
+        assertEquals(doctorDepartment.getDoctor()
+                                     .getId(), doctor.getId());
+        assertEquals(doctorDepartment.getCenter()
+                                     .getId(), center.getId());
         docDepId = doctorDepartment.getId();
     }
 
@@ -85,15 +110,41 @@ class DoctorDepartmentServiceTest {
     void findDoctorOfDepartment() throws IllegalAccessException {
         DoctorDepartment doctorDepartment = doctorDepartmentService.findDoctorOfDepartment(docId, depId);
         assertEquals(doctorDepartment.getId(), docDepId);
-        assertEquals(doctorDepartment.getSchedule().getOnFriday(), true);
-        assertEquals(doctorDepartment.getSchedule().getOnSunday(), true);
-        assertEquals(false, doctorDepartment.getSchedule().getOnMonday());
-        assertEquals(false, doctorDepartment.getSchedule().getOnSaturday());
-        assertEquals(false, doctorDepartment.getSchedule().getOnWednesday());
-        assertEquals(false, doctorDepartment.getSchedule().getOnThursday());
-        assertEquals(2L, doctorDepartment.getSchedule().getTime_from());
-        assertEquals(3L, doctorDepartment.getSchedule().getTime_to());
+        assertEquals(doctorDepartment.getSchedule()
+                                     .getOnFriday(), true);
+        assertEquals(doctorDepartment.getSchedule()
+                                     .getOnSunday(), true);
+        assertEquals(false, doctorDepartment.getSchedule()
+                                            .getOnMonday());
+        assertEquals(false, doctorDepartment.getSchedule()
+                                            .getOnSaturday());
+        assertEquals(false, doctorDepartment.getSchedule()
+                                            .getOnWednesday());
+        assertEquals(false, doctorDepartment.getSchedule()
+                                            .getOnThursday());
+        assertEquals(2L, doctorDepartment.getSchedule()
+                                         .getTime_from());
+        assertEquals(3L, doctorDepartment.getSchedule()
+                                         .getTime_to());
 
 
+    }
+
+    @Test
+    @Order(3)
+    void findScheduleByDoctorDepartment() throws IllegalAccessException {
+        Schedule schedule = doctorDepartmentService.findScheduleByDoctorDepartment(docDepId);
+        assertEquals(true, schedule.getOnFriday());
+        assertEquals(true, schedule.getOnSunday());
+        assertEquals(2L, schedule.getTime_from());
+        assertEquals(3L, schedule.getTime_to());
+    }
+
+    @Test
+    @Order(4)
+    void findScheduleByDoctorDepartmentWithInvalidId() {
+        assertThrows(IllegalAccessException.class, () -> {
+            Schedule schedule = doctorDepartmentService.findScheduleByDoctorDepartment(55L);
+        });
     }
 }

@@ -28,7 +28,10 @@ class DepartmentServiceTest {
     @Order(0)
     void setUp() {
         // create a hospital and a center with it
-        Hospital newHospital = Hospital.builder().name("Alpaca").address("Barack pore").build();
+        Hospital newHospital = Hospital.builder()
+                                       .name("Alpaca")
+                                       .address("Barack pore")
+                                       .build();
         hospital = hospitalRepository.save(newHospital);
 
 
@@ -39,17 +42,22 @@ class DepartmentServiceTest {
     @Order(1)
     void addNewDepartment() throws IllegalAccessException {
 
-        Department newDepartment = Department.builder().name("ENT").build();
+        Department newDepartment = Department.builder()
+                                             .name("ENT")
+                                             .build();
         Department savedDepartment = departmentService.addNewDepartment(newDepartment, hospital.getId());
         assertEquals(savedDepartment.getName(), "ENT");
-        assertEquals(savedDepartment.getHospital().getName(), "Alpaca");
+        assertEquals(savedDepartment.getHospital()
+                                    .getName(), "Alpaca");
     }
 
 
     @Test
     @Order(2)
     void addNewDepartmentWithInvalidCenter() {
-        Department newDepartment = Department.builder().name("ENT").build();
+        Department newDepartment = Department.builder()
+                                             .name("ENT")
+                                             .build();
         assertThrows(IllegalAccessException.class, () -> departmentService.addNewDepartment(newDepartment, 122L));
     }
 }
