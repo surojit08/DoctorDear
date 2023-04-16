@@ -54,6 +54,22 @@
             <artifactId>hibernate-jpamodelgen-jakarta</artifactId>
             <version>5.6.15.Final</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
+            <classifier>jakarta</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+            <classifier>jakarta</classifier>
+        </dependency>
 
     </dependencies>
 

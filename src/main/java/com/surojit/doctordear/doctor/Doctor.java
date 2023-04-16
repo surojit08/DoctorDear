@@ -30,7 +30,7 @@ public class Doctor {
     private String middleName;
 
     @Column()
-    private String regId; // doctor registration id.
+    private String regId;
 
     @JsonManagedReference
     @OneToMany(targetEntity = DoctorQualification.class, mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
