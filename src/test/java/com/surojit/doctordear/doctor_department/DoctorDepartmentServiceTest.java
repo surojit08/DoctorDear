@@ -1,5 +1,7 @@
 package com.surojit.doctordear.doctor_department;
 
+import com.surojit.doctordear.DepartmentSchedule.DepartmentSchedule;
+import com.surojit.doctordear.DepartmentSchedule.ScheduleDay;
 import com.surojit.doctordear.center.Center;
 import com.surojit.doctordear.center.CenterRepository;
 import com.surojit.doctordear.center.CenterStatus;
@@ -17,8 +19,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -88,13 +93,12 @@ class DoctorDepartmentServiceTest {
     @Test
     @Order(1)
     void addDoctorToDepartment() throws IllegalAccessException {
-        Schedule schedule = Schedule.builder()
-                                    .onSunday(true)
-                                    .onFriday(true)
-                                    .time_from(2L)
-                                    .time_to(3L)
-                                    .build();
-        DoctorDepartment doctorDepartment = doctorDepartmentService.addDoctorToDepartment(doctor.getId(), department.getId(), center.getId(), schedule);
+        DepartmentSchedule schedule1 = DepartmentSchedule.builder()
+                                                         .scheduleDay(ScheduleDay.SUNDAY)
+                                                         .time_from(4L)
+                                                         .time_to(5L)
+                                                         .build();
+        DoctorDepartment doctorDepartment = doctorDepartmentService.addDoctorToDepartment(doctor.getId(), department.getId(), center.getId(), List.of(schedule1));
 
         assertEquals(doctorDepartment.getDepartment()
                                      .getId(), department.getId());
@@ -110,41 +114,25 @@ class DoctorDepartmentServiceTest {
     void findDoctorOfDepartment() throws IllegalAccessException {
         DoctorDepartment doctorDepartment = doctorDepartmentService.findDoctorOfDepartment(docId, depId);
         assertEquals(doctorDepartment.getId(), docDepId);
-        assertEquals(doctorDepartment.getSchedule()
-                                     .getOnFriday(), true);
-        assertEquals(doctorDepartment.getSchedule()
-                                     .getOnSunday(), true);
-        assertEquals(false, doctorDepartment.getSchedule()
-                                            .getOnMonday());
-        assertEquals(false, doctorDepartment.getSchedule()
-                                            .getOnSaturday());
-        assertEquals(false, doctorDepartment.getSchedule()
-                                            .getOnWednesday());
-        assertEquals(false, doctorDepartment.getSchedule()
-                                            .getOnThursday());
-        assertEquals(2L, doctorDepartment.getSchedule()
-                                         .getTime_from());
-        assertEquals(3L, doctorDepartment.getSchedule()
-                                         .getTime_to());
 
 
     }
 
     @Test
     @Order(3)
-    void findScheduleByDoctorDepartment() throws IllegalAccessException {
-        Schedule schedule = doctorDepartmentService.findScheduleByDoctorDepartment(docDepId);
-        assertEquals(true, schedule.getOnFriday());
-        assertEquals(true, schedule.getOnSunday());
-        assertEquals(2L, schedule.getTime_from());
-        assertEquals(3L, schedule.getTime_to());
+    void findScheduleByDoctorDepartment() {
+        List<DoctorDepartmentService.ScheduleTime> scheduleTimes = doctorDepartmentService.findScheduleByDoctorDepartment(docDepId);
+        assertTrue(scheduleTimes.size() > 0);
+        DoctorDepartmentService.ScheduleTime firstSchedule = scheduleTimes.get(0);
+        assertEquals(firstSchedule.time_from(), 4L);
+        assertEquals(firstSchedule.time_to(), 5L);
+        assertEquals(firstSchedule.scheduleDay(), ScheduleDay.SUNDAY);
     }
 
     @Test
     @Order(4)
     void findScheduleByDoctorDepartmentWithInvalidId() {
-        assertThrows(IllegalAccessException.class, () -> {
-            Schedule schedule = doctorDepartmentService.findScheduleByDoctorDepartment(55L);
-        });
+        List<DoctorDepartmentService.ScheduleTime> schedules = doctorDepartmentService.findScheduleByDoctorDepartment(55L);
+        assertTrue(schedules.isEmpty());
     }
 }

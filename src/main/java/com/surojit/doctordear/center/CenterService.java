@@ -17,9 +17,8 @@ public class CenterService {
     public Center registerCenter(Center center, Long hospitalId) {
         Hospital hospital = hospitalRepository.getReferenceById(hospitalId);
         center.setHospital(hospital);
-        var t = centerRepository.save(center);
-        return centerRepository.findById(t.getId())
-                               .get();
+
+        return centerRepository.save(center);
     }
 
     public List<Center> findCenters(String centerName) {

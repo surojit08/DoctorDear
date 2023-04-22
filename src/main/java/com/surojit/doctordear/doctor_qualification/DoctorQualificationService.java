@@ -21,9 +21,7 @@ public class DoctorQualificationService {
         Doctor doc = doctorRepository.getReferenceById(doctorId);
         qualifications.forEach(qualification -> qualification.setDoctor(doc));
         doctorQualificationRepository.saveAll(qualifications);
-        return doctorRepository.findById(doctorId)
-                               .get()
-                               .getQualifications();
+        return qualifications;
     }
 
 

@@ -27,7 +27,7 @@ public class DoctorController {
      * Get a general description of doctor such as name, registration number etc.
      */
     @GetMapping("/{doctorId}")
-    public Doctor getDoctorGeneralDescription(@PathVariable Long doctorId) {
+    public Doctor getDoctorGeneralDescription(@PathVariable Long doctorId) throws IllegalAccessException {
         return doctorService.getDoctorGeneralDescription(doctorId);
     }
 

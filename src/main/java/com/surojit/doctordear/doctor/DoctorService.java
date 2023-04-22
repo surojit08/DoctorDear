@@ -24,9 +24,9 @@ public class DoctorService {
     }
 
 
-    public Doctor getDoctorGeneralDescription(Long doctorId) {
+    public Doctor getDoctorGeneralDescription(Long doctorId) throws IllegalAccessException {
         return doctorRepository.findById(doctorId)
-                               .get();
+                               .orElseThrow(IllegalAccessException::new);
     }
 
 
