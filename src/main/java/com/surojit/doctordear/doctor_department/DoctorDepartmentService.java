@@ -14,7 +14,6 @@ import com.surojit.doctordear.doctor.DoctorRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,16 +21,19 @@ import java.util.List;
 @Service
 public class DoctorDepartmentService {
 
-    @Autowired
-    DepartmentRepository departmentRepository;
     @PersistenceContext
     EntityManager em;
-    @Autowired
-    private DoctorRepository doctorRepository;
-    @Autowired
-    private CenterRepository centerRepository;
-    @Autowired
-    private DoctorDepartmentRepository doctorDepartmentRepository;
+    private final DepartmentRepository departmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final CenterRepository centerRepository;
+    private final DoctorDepartmentRepository doctorDepartmentRepository;
+
+    public DoctorDepartmentService(DepartmentRepository departmentRepository, DoctorRepository doctorRepository, CenterRepository centerRepository, DoctorDepartmentRepository doctorDepartmentRepository) {
+        this.departmentRepository = departmentRepository;
+        this.doctorRepository = doctorRepository;
+        this.centerRepository = centerRepository;
+        this.doctorDepartmentRepository = doctorDepartmentRepository;
+    }
 
     @Transactional
     public DoctorDepartment addDoctorToDepartment(Long doctorId, Long departmentId, Long centerId, List<DepartmentSchedule> schedules) throws IllegalAccessException {

@@ -31,10 +31,6 @@ public class DoctorController {
         return doctorService.getDoctorGeneralDescription(doctorId);
     }
 
-    @GetMapping("/{doctorId}/center/{centerId}")
-    public void getDoctorOfCenterDescription(@PathVariable String centerId, @PathVariable String doctorId) {
-
-    }
 
     // doctor self register to system.
     @PostMapping("/register")
@@ -56,11 +52,6 @@ public class DoctorController {
         return doctorService.registerDoctorToSystem(doc, doctorQualifications);
     }
 
-    @PostMapping("/register/{centerId}")
-    public void registerDoctorByCenter(@RequestBody RegisterPayload regPay, @PathVariable String centerId) {
-
-
-    }
 
     @PostMapping("/{doctorId}/qualification")
     public List<DoctorQualification> addQualifications(@RequestBody AddQualificationsPayload addQualificationsPayload, @PathVariable Long doctorId) {
