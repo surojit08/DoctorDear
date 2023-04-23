@@ -1,9 +1,11 @@
 package com.surojit.doctordear.DepartmentSchedule;
 
-import com.surojit.doctordear.doctor.Doctor;
+import com.surojit.doctordear.center.Center;
 import com.surojit.doctordear.doctor_department.DoctorDepartment;
 import jakarta.persistence.*;
 import lombok.*;
+
+// department schedule contains center id, doctor id, doctor department id
 
 @Builder
 @NoArgsConstructor
@@ -11,7 +13,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-public class DepartmentSchedule {
+public class DoctorSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,6 @@ public class DepartmentSchedule {
     @Column(nullable = false)
     private Long time_to;
 
-    // a department schedule must be unique for a doctor.
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "doctor_department_id")
@@ -33,10 +34,10 @@ public class DepartmentSchedule {
     private ScheduleDay scheduleDay;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "center_id", nullable = false)
     @ToString.Exclude
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    private Center center;
 
 
 }

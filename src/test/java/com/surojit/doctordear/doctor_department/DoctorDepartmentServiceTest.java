@@ -1,6 +1,6 @@
 package com.surojit.doctordear.doctor_department;
 
-import com.surojit.doctordear.DepartmentSchedule.DepartmentSchedule;
+import com.surojit.doctordear.DepartmentSchedule.DoctorSchedule;
 import com.surojit.doctordear.DepartmentSchedule.ScheduleDay;
 import com.surojit.doctordear.center.Center;
 import com.surojit.doctordear.center.CenterRepository;
@@ -93,19 +93,17 @@ class DoctorDepartmentServiceTest {
     @Test
     @Order(1)
     void addDoctorToDepartment() throws IllegalAccessException {
-        DepartmentSchedule schedule1 = DepartmentSchedule.builder()
-                                                         .scheduleDay(ScheduleDay.SUNDAY)
-                                                         .time_from(4L)
-                                                         .time_to(5L)
-                                                         .build();
+        DoctorSchedule schedule1 = DoctorSchedule.builder()
+                                                 .scheduleDay(ScheduleDay.SUNDAY)
+                                                 .time_from(4L)
+                                                 .time_to(5L)
+                                                 .build();
         DoctorDepartment doctorDepartment = doctorDepartmentService.addDoctorToDepartment(doctor.getId(), department.getId(), center.getId(), List.of(schedule1));
 
         assertEquals(doctorDepartment.getDepartment()
                                      .getId(), department.getId());
         assertEquals(doctorDepartment.getDoctor()
                                      .getId(), doctor.getId());
-        assertEquals(doctorDepartment.getCenter()
-                                     .getId(), center.getId());
         docDepId = doctorDepartment.getId();
     }
 
@@ -124,9 +122,10 @@ class DoctorDepartmentServiceTest {
         List<DoctorDepartmentService.ScheduleTime> scheduleTimes = doctorDepartmentService.findScheduleByDoctorDepartment(docDepId);
         assertTrue(scheduleTimes.size() > 0);
         DoctorDepartmentService.ScheduleTime firstSchedule = scheduleTimes.get(0);
-        assertEquals(firstSchedule.time_from(), 4L);
-        assertEquals(firstSchedule.time_to(), 5L);
+        assertEquals(firstSchedule.timeFrom(), 4L);
+        assertEquals(firstSchedule.timeTo(), 5L);
         assertEquals(firstSchedule.scheduleDay(), ScheduleDay.SUNDAY);
+        assertEquals(firstSchedule.centerId(), center.getId());
     }
 
     @Test

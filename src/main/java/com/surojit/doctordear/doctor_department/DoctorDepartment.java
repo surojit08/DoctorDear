@@ -1,8 +1,7 @@
 package com.surojit.doctordear.doctor_department;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.surojit.doctordear.DepartmentSchedule.DepartmentSchedule;
-import com.surojit.doctordear.center.Center;
+import com.surojit.doctordear.DepartmentSchedule.DoctorSchedule;
 import com.surojit.doctordear.department.Department;
 import com.surojit.doctordear.doctor.Doctor;
 import jakarta.persistence.*;
@@ -33,10 +32,6 @@ public class DoctorDepartment {
     @ToString.Exclude
     private Department department;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "center_id", nullable = false)
-    @ToString.Exclude
-    private Center center;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,8 +41,8 @@ public class DoctorDepartment {
 
     @JsonManagedReference
     @ToString.Exclude
-    @OneToMany(targetEntity = DepartmentSchedule.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<DepartmentSchedule> departmentSchedules;
+    @OneToMany(targetEntity = DoctorSchedule.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DoctorSchedule> doctorSchedules;
 
 
 }

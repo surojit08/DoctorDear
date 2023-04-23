@@ -2,8 +2,8 @@ package com.surojit.doctordear.doctor_department;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.surojit.doctordear.DepartmentSchedule.DepartmentSchedule;
-import com.surojit.doctordear.DepartmentSchedule.QDepartmentSchedule;
+import com.surojit.doctordear.DepartmentSchedule.DoctorSchedule;
+import com.surojit.doctordear.DepartmentSchedule.QDoctorSchedule;
 import com.surojit.doctordear.DepartmentSchedule.ScheduleDay;
 import com.surojit.doctordear.center.Center;
 import com.surojit.doctordear.center.CenterRepository;
@@ -21,12 +21,12 @@ import java.util.List;
 @Service
 public class DoctorDepartmentService {
 
-    @PersistenceContext
-    EntityManager em;
     private final DepartmentRepository departmentRepository;
     private final DoctorRepository doctorRepository;
     private final CenterRepository centerRepository;
     private final DoctorDepartmentRepository doctorDepartmentRepository;
+    @PersistenceContext
+    EntityManager em;
 
     public DoctorDepartmentService(DepartmentRepository departmentRepository, DoctorRepository doctorRepository, CenterRepository centerRepository, DoctorDepartmentRepository doctorDepartmentRepository) {
         this.departmentRepository = departmentRepository;
@@ -36,7 +36,7 @@ public class DoctorDepartmentService {
     }
 
     @Transactional
-    public DoctorDepartment addDoctorToDepartment(Long doctorId, Long departmentId, Long centerId, List<DepartmentSchedule> schedules) throws IllegalAccessException {
+    public DoctorDepartment addDoctorToDepartment(Long doctorId, Long departmentId, Long centerId, List<DoctorSchedule> schedules) throws IllegalAccessException {
         Department department = departmentRepository.findById(departmentId)
                                                     .orElseThrow(IllegalAccessException::new);
         Center center = centerRepository.findById(centerId)
@@ -44,7 +44,6 @@ public class DoctorDepartmentService {
         Doctor doctor = doctorRepository.findById(doctorId)
                                         .orElseThrow(IllegalAccessException::new);
         var doctorDepartment = DoctorDepartment.builder()
-                                               .center(center)
                                                .department(department)
                                                .doctor(doctor)
                                                .status(DoctorDepartmentStatus.A)
@@ -53,10 +52,10 @@ public class DoctorDepartmentService {
         if (schedules != null) {
             schedules.forEach(d -> {
                 d.setDoctorDepartment(doctorDepartment);
-                d.setDoctor(doctor);
+                d.setCenter(center);
             });
 
-            doctorDepartment.setDepartmentSchedules(schedules);
+            doctorDepartment.setDoctorSchedules(schedules);
         }
 
         return doctorDepartmentRepository.save(doctorDepartment);
@@ -76,21 +75,23 @@ public class DoctorDepartmentService {
     }
 
     public List<ScheduleTime> findScheduleByDoctorDepartment(Long docDepId) {
-        QDepartmentSchedule departmentSchedule = QDepartmentSchedule.departmentSchedule;
+        QDoctorSchedule departmentSchedule = QDoctorSchedule.doctorSchedule;
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
 
         List<ScheduleTime> scheduleTimes = jpaQueryFactory.selectFrom(departmentSchedule)
-                                                          .select(departmentSchedule.id, departmentSchedule.scheduleDay, departmentSchedule.time_from, departmentSchedule.time_to)
+                                                          .select(departmentSchedule.id, departmentSchedule.scheduleDay, departmentSchedule.time_from, departmentSchedule.time_to, departmentSchedule.center.id)
                                                           .where(departmentSchedule.doctorDepartment.id.eq(docDepId))
                                                           .fetch()
                                                           .stream()
-                                                          .map(c -> new ScheduleTime(c.get(departmentSchedule.id), c.get(departmentSchedule.scheduleDay), c.get(departmentSchedule.time_from), c.get(departmentSchedule.time_to)))
+                                                          .map(c -> new ScheduleTime(c.get(departmentSchedule.id), c.get(departmentSchedule.scheduleDay),
+                                                                  c.get(departmentSchedule.time_from), c.get(departmentSchedule.time_to),
+                                                                  c.get(departmentSchedule.center.id)))
                                                           .toList();
         System.out.println("Getting the results" + scheduleTimes);
         return scheduleTimes;
     }
 
-    public record ScheduleTime(Long id, ScheduleDay scheduleDay, Long time_from, Long time_to) {
+    public record ScheduleTime(Long id, ScheduleDay scheduleDay, Long timeFrom, Long timeTo, Long centerId) {
     }
 
 
