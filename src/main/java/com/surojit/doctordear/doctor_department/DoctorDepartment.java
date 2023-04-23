@@ -41,7 +41,7 @@ public class DoctorDepartment {
 
     @JsonManagedReference
     @ToString.Exclude
-    @OneToMany(targetEntity = DoctorSchedule.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = DoctorSchedule.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctorDepartment")
     private List<DoctorSchedule> doctorSchedules;
 
 
