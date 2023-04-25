@@ -1,11 +1,11 @@
 package com.surojit.doctordear.DepartmentSchedule;
 
-import com.surojit.doctordear.center.Center;
-import com.surojit.doctordear.doctor_department.DoctorDepartment;
+import com.surojit.doctordear.Center.Center;
+import com.surojit.doctordear.DoctorDepartment.DoctorDepartment;
 import jakarta.persistence.*;
 import lombok.*;
 
-// department schedule contains center id, doctor id, doctor department id
+// Department schedule contains Center id, Doctor id, Doctor Department id
 
 @Builder
 @NoArgsConstructor
