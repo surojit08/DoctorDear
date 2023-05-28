@@ -1,11 +1,7 @@
 package com.surojit.doctordear.Hospital;
 
-import com.surojit.doctordear.Center.Center;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.surojit.doctordear.Hospital.DTO.RegisterRequestDTO;
+import com.surojit.doctordear.Hospital.DTO.RegisterResponseDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,22 +13,16 @@ import java.util.List;
 @RequestMapping("/hospital")
 public class HospitalController {
 
-    @Autowired
-    HospitalService hospitalService;
+    private final HospitalService hospitalService;
 
-    @PostMapping("")
-    public Hospital registerHospital(@RequestBody RegisterPayload regPay) {
-        return hospitalService.registerHospital(regPay.hospital, List.of(regPay.centers));
+    public HospitalController(HospitalService hospitalService) {
+        this.hospitalService = hospitalService;
     }
 
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @ToString
-    private static class RegisterPayload {
-        private Hospital hospital;
-        private Center[] centers;
+    @PostMapping("")
+    public RegisterResponseDTO registerHospital(@RequestBody RegisterRequestDTO registerRequestDTO) {
+        Hospital hospital = hospitalService.registerHospitalWithCenters(registerRequestDTO.getHospital(), List.of(registerRequestDTO.getCenters()));
+        return new RegisterResponseDTO(new RegisterResponseDTO.HospitalResponse(hospital.getId(), hospital.getName(), hospital.getAddress()));
     }
 
 

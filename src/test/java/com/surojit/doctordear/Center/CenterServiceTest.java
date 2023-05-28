@@ -32,7 +32,7 @@ class CenterServiceTest {
                                        .name("L.Asm")
                                        .address("Kolkata")
                                        .build();
-        Hospital saved_hospital = hospitalService.registerHospital(newHospital, List.of());
+        Hospital saved_hospital = hospitalService.registerHospitalWithCenters(newHospital, List.of());
 
         // create a new Center of the Hospital.
         Center newCenter = Center.builder()

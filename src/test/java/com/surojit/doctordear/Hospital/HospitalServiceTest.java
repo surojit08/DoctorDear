@@ -22,7 +22,7 @@ class HospitalServiceTest {
                                        .name("Alpaca")
                                        .address("Barack pore")
                                        .build();
-        Hospital savedHospital = hospitalService.registerHospital(newHospital, List.of());
+        Hospital savedHospital = hospitalService.registerHospitalWithCenters(newHospital, List.of());
         assertEquals(savedHospital.getName(), "Alpaca");
     }
 
@@ -44,7 +44,7 @@ class HospitalServiceTest {
                                .name("MPP")
                                .status(CenterStatus.A)
                                .build();
-        Hospital savedHospital = hospitalService.registerHospital(newHospital, List.of(center1, center2));
+        Hospital savedHospital = hospitalService.registerHospitalWithCenters(newHospital, List.of(center1, center2));
         assertEquals(savedHospital.getName(), "Alpaca");
         assertEquals(savedHospital.getCenters()
                                   .size(), 2);
